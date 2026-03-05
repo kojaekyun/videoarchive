@@ -38,13 +38,10 @@ export async function GET(request) {
       )
     );
 
-    // 최신 날짜순 정렬
-    data.sort((a, b) => {
-      if (!a.created_at) return 1;
-      if (!b.created_at) return -1;
-      return new Date(b.created_at) - new Date(a.created_at);
-    });
 
+
+
+    
     // 🔥 쿼리 파라미터 가져오기
     const { searchParams } = new URL(request.url);
     const platform = searchParams.get("platform");
@@ -78,6 +75,27 @@ export async function GET(request) {
     }
 
 
+
+// 🔥 정렬 옵션
+const sort = searchParams.get("sort") || "latest";
+
+filteredData.sort((a, b) => {
+  if (!a.created_at) return 1;
+  if (!b.created_at) return -1;
+
+  const dateA = new Date(a.created_at);
+  const dateB = new Date(b.created_at);
+
+  if (sort === "oldest") {
+    return dateA - dateB; // 오름차순
+  }
+
+  // 기본값 latest
+  return dateB - dateA; // 내림차순
+});
+
+
+    
     
     
     return Response.json({
