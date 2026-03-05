@@ -37,6 +37,13 @@ export async function GET() {
       )
     );
 
+    // 최신 날짜순 정렬
+    data.sort((a, b) => {
+      if (!a.created_at) return 1;
+      if (!b.created_at) return -1;
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+    
     return Response.json({
       success: true,
       data,
