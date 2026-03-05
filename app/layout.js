@@ -3,6 +3,8 @@ export const metadata = {
   description: "Google Sheets Test",
 };
 
+import "./globals.css";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">

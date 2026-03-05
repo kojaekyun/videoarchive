@@ -7,9 +7,18 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "cheerio": "^1.2.0",
     "googleapis": "^133.0.0",
     "next": "14.2.3",
+    "openai": "^6.25.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-tooltip": "^5.30.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1"
   }
 }
