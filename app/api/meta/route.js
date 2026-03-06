@@ -23,27 +23,50 @@ export async function GET(request) {
     }
 
     try {
-        // Attempt to fetch the HTML to scrape the title
-        const res = await fetch(targetUrl, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        });
+        let title = '';
+        let thumbnail = '';
 
-        if (!res.ok) {
-            throw new Error(`Failed to fetch URL: ${res.status}`);
+        // Special handling for YouTube using oEmbed (much more reliable)
+        if (platform === 'youtube') {
+            try {
+                const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(targetUrl)}&format=json`;
+                const ytRes = await fetch(oembedUrl);
+                if (ytRes.ok) {
+                    const ytData = await ytRes.json();
+                    title = ytData.title || '';
+                    thumbnail = ytData.thumbnail_url || '';
+                }
+            } catch (ytErr) {
+                console.error('YouTube oEmbed error:', ytErr);
+            }
         }
 
-        const html = await res.text();
-        const $ = cheerio.load(html);
+        // If title is still empty, fallback to generic scraper
+        if (!title) {
+            const res = await fetch(targetUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                }
+            });
 
-        // Try to get og:title first, fallback to <title>
-        let title = $('meta[property="og:title"]').attr('content') || $('title').text() || '';
+            if (res.ok) {
+                const html = await res.text();
+                const $ = cheerio.load(html);
 
-        let thumbnail = $('meta[property="og:image"]').attr('content') || '';
+                // Try various meta tags
+                title = $('meta[property="og:title"]').attr('content') ||
+                    $('meta[name="twitter:title"]').attr('content') ||
+                    $('title').text() || '';
 
-        // Clean up title (remove ' - YouTube' etc)
-        title = title.replace(/\s*-\s*YouTube$/, '').trim();
+                if (!thumbnail) {
+                    thumbnail = $('meta[property="og:image"]').attr('content') ||
+                        $('meta[name="twitter:image"]').attr('content') || '';
+                }
+
+                // Clean up title
+                title = title.replace(/\s*-\s*(YouTube|Instagram|Facebook|TikTok)$/i, '').trim();
+            }
+        }
 
         return Response.json({ success: true, platform, title, thumbnail });
     } catch (error) {
