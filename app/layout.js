@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "My Ad Archive",
+  title: "Video Archive Dashboard",
   description: "Google Sheets Test",
 };
 

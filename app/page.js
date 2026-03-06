@@ -206,7 +206,7 @@ export default function DashboardPage() {
         )}
 
         <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug">
-          {ad.ad_title || "Untitled Ad"}
+          {ad.ad_title || "Untitled Video"}
         </h3>
 
         <p className="text-sm font-semibold text-gray-500 mb-6 flex items-center gap-2">
@@ -270,7 +270,7 @@ export default function DashboardPage() {
             className="block w-full text-center bg-gray-50 hover:bg-[#ff7a00] hover:text-white text-gray-700 font-semibold rounded-2xl py-3 transition-colors duration-300"
             onClick={e => !ad.url && e.preventDefault()}
           >
-            View Ad URL
+            View Video URL
           </a>
         </div>
       </div>
@@ -285,7 +285,7 @@ export default function DashboardPage() {
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col gap-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Ad Archive Dashboard</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Video Archive Dashboard</h1>
               <p className="text-gray-500 text-sm mt-1">Browse, filter, and analyze video ads.</p>
             </div>
 
@@ -295,7 +295,7 @@ export default function DashboardPage() {
                 onClick={() => setIsModalOpen(true)}
                 className="bg-[#ff7a00] hover:bg-[#e66c00] text-white font-bold px-5 py-2.5 rounded-2xl shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-2"
               >
-                <span>➕</span> Add New Ad
+                <span>➕</span> Add New Video
               </button>
 
               <div className="h-6 w-px bg-gray-200 mx-1 hidden md:block"></div>
@@ -377,7 +377,7 @@ export default function DashboardPage() {
             {/* Modal Header */}
             <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gray-50/50">
               <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <span>✨</span> Register New Ad
+                <span>✨</span> Register New Video
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -437,7 +437,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Ad Title / Hook</label>
+                <label className="text-sm font-semibold text-gray-700 ml-1">Video Title / Hook</label>
                 <input
                   type="text"
                   required
@@ -455,7 +455,7 @@ export default function DashboardPage() {
                   disabled={isSubmitting || isFetchingMeta}
                   className="w-full bg-[#ff7a00] hover:bg-[#e66c00] active:scale-[0.98] text-white font-bold rounded-2xl px-4 py-4 transition-all shadow-lg shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
                 >
-                  {isSubmitting ? "Processing..." : "Submit New Ad"}
+                  {isSubmitting ? "Processing..." : "Submit New Video"}
                 </button>
               </div>
 
