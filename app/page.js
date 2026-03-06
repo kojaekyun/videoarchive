@@ -231,7 +231,7 @@ export default function DashboardPage() {
 
     return (
       <div
-        className="group bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col relative"
+        className="group bg-white rounded-3xl p-5 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col relative"
       >
         {/* Tooltip Target for GPT Analysis */}
         {ad.gpt_analysis && (
@@ -246,7 +246,7 @@ export default function DashboardPage() {
         <Tooltip id={`tt-${idx}`} place="top" variant="light" className="max-w-xs shadow-xl border border-gray-100 z-50 rounded-2xl !py-3 !px-4 !text-sm !text-gray-700 !leading-relaxed" style={{ backgroundColor: "white" }} />
 
         {/* Header */}
-        <div className="flex justify-between items-start mb-4 pr-10">
+        <div className="flex justify-between items-start mb-3 pr-10">
           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold capitalize tracking-wide ${getPlatformColor(ad.platform)}`}>
             {ad.platform}
           </span>
@@ -272,20 +272,20 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug">
+        <h3 className="text-base font-bold text-gray-900 mb-1.5 leading-snug">
           {ad.ad_title || "Untitled Video"}
         </h3>
 
-        <p className="text-sm font-semibold text-gray-500 mb-6 flex items-center gap-2">
-          <span className="text-xl opacity-80">🏬</span> {ad.brand || "Unknown Brand"}
+        <p className="text-xs font-semibold text-gray-500 mb-4 flex items-center gap-2">
+          <span className="text-base opacity-80">🏬</span> {ad.brand || "Unknown Brand"}
         </p>
 
-        <div className="flex-1 space-y-5">
+        <div className="flex-1 space-y-3.5">
           {/* Emotion Score */}
           <div>
             <div className="flex justify-between items-center text-xs mb-1.5 font-bold text-gray-400">
               <span>EMOTION SCORE</span>
-              <span className={`flex items-center gap-1 ${em.color} text-sm`}>
+              <span className={`flex items-center gap-1 ${em.color} text-xs`}>
                 {em.icon} {ad.emotion_score || 0}/5
               </span>
             </div>
@@ -299,28 +299,28 @@ export default function DashboardPage() {
             <div className="flex justify-between items-center text-xs mb-1.5 font-bold text-gray-400 uppercase">
               <span>IMPRESSION POINT</span>
             </div>
-            <div className="bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-sm font-semibold text-[#ff7a00] flex items-center gap-2">
+            <div className="bg-gray-50 border border-gray-100 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-[#ff7a00] flex items-center gap-2">
               <span>💡</span> {ad.impression_point || "-"}
             </div>
           </div>
 
           {/* Additional Fields */}
-          <div className="text-sm space-y-3 pt-5 mt-3 border-t border-gray-50">
+          <div className="text-xs space-y-2 pt-3 mt-2 border-t border-gray-50">
             {ad.target_guess && (
-              <div className="flex items-start gap-2.5">
-                <span className="inline-flex mt-0.5 text-base opacity-70">🎯</span>
+              <div className="flex items-start gap-2">
+                <span className="inline-flex mt-0.5 text-sm opacity-70">🎯</span>
                 <span className="text-gray-700 leading-snug">{ad.target_guess}</span>
               </div>
             )}
             {ad.hook_type && (
-              <div className="flex items-start gap-2.5">
-                <span className="inline-flex mt-0.5 text-base opacity-70">🪝</span>
+              <div className="flex items-start gap-2">
+                <span className="inline-flex mt-0.5 text-sm opacity-70">🪝</span>
                 <span className="text-gray-700 leading-snug"><span className="font-semibold text-gray-900">Hook:</span> {ad.hook_type}</span>
               </div>
             )}
             {ad.my_comment && (
-              <div className="flex items-start gap-2.5">
-                <span className="inline-flex mt-0.5 text-base opacity-70">✍️</span>
+              <div className="flex items-start gap-2">
+                <span className="inline-flex mt-0.5 text-sm opacity-70">✍️</span>
                 <span className="text-gray-600 italic line-clamp-2 leading-relaxed">{ad.my_comment}</span>
               </div>
             )}
@@ -328,12 +328,12 @@ export default function DashboardPage() {
         </div>
 
         {/* Action Button & Controls */}
-        <div className="mt-6 pt-4 border-t border-gray-50 space-y-3">
+        <div className="mt-4 pt-3 border-t border-gray-50 space-y-2.5">
           <a
             href={ad.url ? (!ad.url.startsWith('http') ? `https://${ad.url}` : ad.url) : '#'}
             target="_blank"
             rel="noreferrer"
-            className="block w-full text-center bg-gray-50 hover:bg-[#ff7a00] hover:text-white text-gray-700 font-semibold rounded-2xl py-3 transition-colors duration-300"
+            className="block w-full text-center bg-gray-50 hover:bg-[#ff7a00] hover:text-white text-gray-700 font-semibold rounded-xl py-2.5 text-sm transition-colors duration-300"
             onClick={e => !ad.url && e.preventDefault()}
           >
             View Video URL
