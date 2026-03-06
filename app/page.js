@@ -21,6 +21,9 @@ export default function DashboardPage() {
   const [newBrand, setNewBrand] = useState("");
   const [newPlatform, setNewPlatform] = useState("youtube");
   const [newTitle, setNewTitle] = useState("");
+  const [newEmotionScore, setNewEmotionScore] = useState("3");
+  const [newImpressionPoint, setNewImpressionPoint] = useState("");
+  const [newHookType, setNewHookType] = useState("trend_meme");
 
   const [isFetchingMeta, setIsFetchingMeta] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,7 +89,10 @@ export default function DashboardPage() {
           brand: newBrand,
           platform: newPlatform,
           ad_title: newTitle,
-          url: newUrl
+          url: newUrl,
+          emotion_score: newEmotionScore,
+          impression_point: newImpressionPoint,
+          hook_type: newHookType
         })
       });
 
@@ -96,6 +102,9 @@ export default function DashboardPage() {
         setNewBrand("");
         setNewPlatform("youtube");
         setNewTitle("");
+        setNewEmotionScore("3");
+        setNewImpressionPoint("");
+        setNewHookType("trend_meme");
         setIsModalOpen(false); // Close modal on success
 
         // Reload data
@@ -116,8 +125,8 @@ export default function DashboardPage() {
   const getEmotionDetails = (score) => {
     if (!score && score !== 0) return { color: "text-gray-400", bg: "bg-gray-100", icon: "💬" };
     const s = Number(score);
-    if (s <= 3) return { color: "text-red-500", bg: "bg-red-500", icon: "😞" };
-    if (s <= 6) return { color: "text-yellow-500", bg: "bg-yellow-500", icon: "😐" };
+    if (s <= 2) return { color: "text-red-500", bg: "bg-red-500", icon: "😞" };
+    if (s <= 3) return { color: "text-yellow-500", bg: "bg-yellow-500", icon: "😐" };
     return { color: "text-green-500", bg: "bg-green-500", icon: "😊" };
   };
 
@@ -194,7 +203,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Dynamic Thumbnail Preview */}
-        {displayThumb && (
+        {displayThumb ? (
           <div className="w-full h-36 mb-4 bg-gray-100 rounded-2xl overflow-hidden relative">
             <img src={displayThumb} alt="thumbnail" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
             <div className="absolute inset-0 bg-black/5 flex items-center justify-center">
@@ -202,6 +211,11 @@ export default function DashboardPage() {
                 <span className="ml-1 text-red-600 text-lg">{ytThumb ? "▶" : "🔗"}</span>
               </div>
             </div>
+          </div>
+        ) : (
+          <div className="w-full h-36 mb-4 bg-gray-100 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-gray-200 group-hover:bg-gray-200 transition-colors">
+            <span className="text-2xl mb-1 mt-2">🖼️</span>
+            <span className="text-xs font-medium text-gray-400">썸네일이 없습니다</span>
           </div>
         )}
 
@@ -219,22 +233,21 @@ export default function DashboardPage() {
             <div className="flex justify-between items-center text-xs mb-1.5 font-bold text-gray-400">
               <span>EMOTION SCORE</span>
               <span className={`flex items-center gap-1 ${em.color} text-sm`}>
-                {em.icon} {ad.emotion_score || 0}/10
+                {em.icon} {ad.emotion_score || 0}/5
               </span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-              <div className={`h-2 rounded-full ${em.bg} transition-all duration-500`} style={{ width: `${(Number(ad.emotion_score || 0) / 10) * 100}%` }}></div>
+              <div className={`h-2 rounded-full ${em.bg} transition-all duration-500`} style={{ width: `${(Number(ad.emotion_score || 0) / 5) * 100}%` }}></div>
             </div>
           </div>
 
           {/* Impression Point */}
           <div>
-            <div className="flex justify-between items-center text-xs mb-1.5 font-bold text-gray-400">
+            <div className="flex justify-between items-center text-xs mb-1.5 font-bold text-gray-400 uppercase">
               <span>IMPRESSION POINT</span>
-              <span className="text-[#ff7a00] text-sm">{imp}/100</span>
             </div>
-            <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-              <div className="bg-[#ff7a00] h-2 rounded-full transition-all duration-500" style={{ width: `${Math.min(imp, 100)}%` }}></div>
+            <div className="bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-sm font-semibold text-[#ff7a00] flex items-center gap-2">
+              <span>💡</span> {ad.impression_point || "-"}
             </div>
           </div>
 
@@ -445,6 +458,49 @@ export default function DashboardPage() {
                   onChange={e => setNewTitle(e.target.value)}
                   className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
                   placeholder="The creative hook or title..."
+                />
+              </div>
+
+              {/* Added Fields */}
+              <div className="grid grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 ml-1">Emotion Score</label>
+                  <select
+                    value={newEmotionScore}
+                    onChange={e => setNewEmotionScore(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
+                  >
+                    {[1, 2, 3, 4, 5].map(score => (
+                      <option key={score} value={score}>{score}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700 ml-1">Hook Type</label>
+                  <select
+                    value={newHookType}
+                    onChange={e => setNewHookType(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
+                  >
+                    <option value="trend_meme">trend_meme</option>
+                    <option value="shock_visual">shock_visual</option>
+                    <option value="bgm">bgm</option>
+                    <option value="model">model</option>
+                    <option value="copy">copy</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700 ml-1">Impression Point</label>
+                <input
+                  type="text"
+                  required
+                  value={newImpressionPoint}
+                  onChange={e => setNewImpressionPoint(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
+                  placeholder="Describe the key impression point..."
                 />
               </div>
 

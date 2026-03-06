@@ -37,7 +37,7 @@ Platform: "${platform}"`;
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { brand, platform, ad_title, url } = body;
+        const { brand, platform, ad_title, url, emotion_score, impression_point, hook_type } = body;
 
         // Check required fields
         if (!brand || !platform || !ad_title || !url) {
@@ -75,10 +75,10 @@ export async function POST(request) {
             ad_title,
             url,
             "", // format
-            "", // emotion_score
-            "", // impression_point
+            emotion_score || "",
+            impression_point || "",
             "", // target_guess
-            "", // hook_type
+            hook_type || "",
             "", // my_comment
             gpt_analysis
         ];
