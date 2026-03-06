@@ -18,6 +18,8 @@ export async function GET(request) {
         platform = 'instagram';
     } else if (lowerUrl.includes('facebook.com') || lowerUrl.includes('fb.watch')) {
         platform = 'facebook';
+    } else if (lowerUrl.includes('tiktok.com')) {
+        platform = 'tiktok';
     }
 
     try {

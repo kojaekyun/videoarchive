@@ -388,8 +388,8 @@ export default function DashboardPage() {
           <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-lg overflow-hidden transform transition-all">
 
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gray-50/50">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <span>✨</span> Register New Video
               </h2>
               <button
@@ -403,72 +403,73 @@ export default function DashboardPage() {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleAddAd} className="p-8 flex flex-col gap-6">
+            <form onSubmit={handleAddAd} className="p-6 flex flex-col gap-4">
 
               {/* 1. URL First (triggers Autofill) */}
-              <div className="space-y-2 relative">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Video URL {isFetchingMeta && <span className="text-xs text-blue-500 ml-2 animate-pulse">Auto-filling metadata...</span>}</label>
+              <div className="space-y-1 relative">
+                <label className="text-xs font-semibold text-gray-700 ml-1">Video URL {isFetchingMeta && <span className="text-[10px] text-blue-500 ml-2 animate-pulse">Auto-filling...</span>}</label>
                 <input
                   type="url"
                   required
                   value={newUrl}
                   onChange={e => setNewUrl(e.target.value)}
                   onBlur={handleUrlBlur}
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
                   placeholder="Paste URL to auto-fill (https://...)"
                 />
               </div>
 
               {/* 2. Brand */}
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Brand Name</label>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700 ml-1">Brand Name</label>
                 <input
                   type="text"
                   required
                   value={newBrand}
                   onChange={e => setNewBrand(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
                   placeholder="e.g. Apple"
                 />
               </div>
 
               {/* 3. Platform & Title (Auto-filled but editable) */}
-              <div className="flex flex-col md:flex-row gap-5">
-                <div className="flex-1 space-y-2">
-                  <label className="text-sm font-semibold text-gray-700 ml-1">Platform</label>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 space-y-1">
+                  <label className="text-xs font-semibold text-gray-700 ml-1">Platform</label>
                   <select
                     value={newPlatform}
                     onChange={e => setNewPlatform(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
+                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
                   >
                     <option value="youtube">YouTube</option>
                     <option value="instagram">Instagram</option>
                     <option value="facebook">Facebook</option>
+                    <option value="tiktok">TikTok</option>
                     <option value="ott">OTT</option>
                   </select>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Video Title / Hook</label>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700 ml-1">Video Title / Hook</label>
                 <input
                   type="text"
                   required
                   value={newTitle}
                   onChange={e => setNewTitle(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
                   placeholder="The creative hook or title..."
                 />
               </div>
 
               {/* Added Fields */}
-              <div className="grid grid-cols-2 gap-5">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700 ml-1">Emotion Score</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-gray-700 ml-1">Emotion Score</label>
                   <select
                     value={newEmotionScore}
                     onChange={e => setNewEmotionScore(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
+                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
                   >
                     {[1, 2, 3, 4, 5].map(score => (
                       <option key={score} value={score}>{score}</option>
@@ -476,12 +477,12 @@ export default function DashboardPage() {
                   </select>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700 ml-1">Hook Type</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-gray-700 ml-1">Hook Type</label>
                   <select
                     value={newHookType}
                     onChange={e => setNewHookType(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
+                    className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors cursor-pointer"
                   >
                     <option value="trend_meme">trend_meme</option>
                     <option value="shock_visual">shock_visual</option>
@@ -492,24 +493,24 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Impression Point</label>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-gray-700 ml-1">Impression Point</label>
                 <input
                   type="text"
                   required
                   value={newImpressionPoint}
                   onChange={e => setNewImpressionPoint(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
                   placeholder="Describe the key impression point..."
                 />
               </div>
 
               {/* Submit Action */}
-              <div className="pt-2 mt-4 border-t border-gray-100">
+              <div className="pt-2 mt-2 border-t border-gray-100">
                 <button
                   type="submit"
                   disabled={isSubmitting || isFetchingMeta}
-                  className="w-full bg-[#ff7a00] hover:bg-[#e66c00] active:scale-[0.98] text-white font-bold rounded-2xl px-4 py-4 transition-all shadow-lg shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+                  className="w-full bg-[#ff7a00] hover:bg-[#e66c00] active:scale-[0.98] text-white font-bold rounded-xl px-4 py-3 transition-all shadow-lg shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed text-base"
                 >
                   {isSubmitting ? "Processing..." : "Submit New Video"}
                 </button>
