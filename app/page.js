@@ -15,6 +15,7 @@ export default function DashboardPage() {
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null); // null means adding, non-null means editing
 
   // Registration Form State (Order: URL -> Brand -> Title/Platform)
   const [newUrl, setNewUrl] = useState("");
@@ -76,27 +77,57 @@ export default function DashboardPage() {
     }
   };
 
-  const handleAddAd = async (e) => {
+  const handleOpenAdd = () => {
+    setEditingId(null);
+    setNewUrl("");
+    setNewBrand("");
+    setNewPlatform("youtube");
+    setNewTitle("");
+    setNewEmotionScore("3");
+    setNewImpressionPoint("");
+    setNewHookType("trend_meme");
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (ad) => {
+    setEditingId(ad.id);
+    setNewUrl(ad.url || "");
+    setNewBrand(ad.brand || "");
+    setNewPlatform(ad.platform || "youtube");
+    setNewTitle(ad.ad_title || "");
+    setNewEmotionScore(ad.emotion_score || "3");
+    setNewImpressionPoint(ad.impression_point || "");
+    setNewHookType(ad.hook_type || "trend_meme");
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newBrand || !newTitle || !newUrl) return;
 
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/add", {
+      const endpoint = editingId ? "/api/edit" : "/api/add";
+      const payload = {
+        brand: newBrand,
+        platform: newPlatform,
+        ad_title: newTitle,
+        url: newUrl,
+        emotion_score: newEmotionScore,
+        impression_point: newImpressionPoint,
+        hook_type: newHookType
+      };
+
+      if (editingId) payload.id = editingId;
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          brand: newBrand,
-          platform: newPlatform,
-          ad_title: newTitle,
-          url: newUrl,
-          emotion_score: newEmotionScore,
-          impression_point: newImpressionPoint,
-          hook_type: newHookType
-        })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
+        if (editingId) alert("수정 되었습니다.");
         // Reset form
         setNewUrl("");
         setNewBrand("");
@@ -105,19 +136,41 @@ export default function DashboardPage() {
         setNewEmotionScore("3");
         setNewImpressionPoint("");
         setNewHookType("trend_meme");
-        setIsModalOpen(false); // Close modal on success
+        setIsModalOpen(false);
+        setEditingId(null);
 
         // Reload data
         fetchData();
       } else {
         const errorText = await response.text();
-        console.error("Failed to add ad:", errorText);
-        alert(`Failed to save ad. Server says: ${errorText}`);
+        console.error("Failed to save:", errorText);
+        alert(`저장에 실패했습니다. ${errorText}`);
       }
     } catch (error) {
-      console.error("Error adding ad:", error);
+      console.error("Error saving:", error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      const response = await fetch("/api/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+      });
+
+      if (response.ok) {
+        alert("삭제되었습니다.");
+        fetchData();
+      } else {
+        alert("삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
     }
   };
 
@@ -274,8 +327,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Action Button */}
-        <div className="mt-6 pt-4 border-t border-gray-50">
+        {/* Action Button & Controls */}
+        <div className="mt-6 pt-4 border-t border-gray-50 space-y-3">
           <a
             href={ad.url ? (!ad.url.startsWith('http') ? `https://${ad.url}` : ad.url) : '#'}
             target="_blank"
@@ -285,6 +338,21 @@ export default function DashboardPage() {
           >
             View Video URL
           </a>
+
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleOpenEdit(ad)}
+              className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold rounded-xl py-2 text-sm transition-colors flex items-center justify-center gap-1"
+            >
+              <span>✏️</span> 수정
+            </button>
+            <button
+              onClick={() => handleDelete(ad.id)}
+              className="flex-1 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-xl py-2 text-sm transition-colors flex items-center justify-center gap-1"
+            >
+              <span>🗑️</span> 삭제
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -303,9 +371,8 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              {/* Add New Ad Button triggers Modal */}
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={handleOpenAdd}
                 className="bg-[#ff7a00] hover:bg-[#e66c00] text-white font-bold px-5 py-2.5 rounded-2xl shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-2"
               >
                 <span>➕</span> Add New Video
@@ -390,10 +457,13 @@ export default function DashboardPage() {
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <span>✨</span> Register New Video
+                <span>{editingId ? "✏️" : "✨"}</span> {editingId ? "Edit Video" : "Register New Video"}
               </h2>
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setEditingId(null);
+                }}
                 className="text-gray-400 hover:text-gray-700 transition-colors p-2 rounded-full hover:bg-gray-100"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -403,7 +473,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleAddAd} className="p-6 flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">
 
               {/* 1. URL First (triggers Autofill) */}
               <div className="space-y-1 relative">
@@ -511,7 +581,7 @@ export default function DashboardPage() {
                   disabled={isSubmitting || isFetchingMeta}
                   className="w-full bg-[#ff7a00] hover:bg-[#e66c00] active:scale-[0.98] text-white font-bold rounded-xl px-4 py-3 transition-all shadow-lg shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed text-base"
                 >
-                  {isSubmitting ? "Processing..." : "Submit New Video"}
+                  {isSubmitting ? "Processing..." : (editingId ? "Update Video" : "Submit New Video")}
                 </button>
               </div>
 
