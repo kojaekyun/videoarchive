@@ -497,7 +497,6 @@ export default function DashboardPage() {
                 <label className="text-xs font-semibold text-gray-700 ml-1">Impression Point</label>
                 <input
                   type="text"
-                  required
                   value={newImpressionPoint}
                   onChange={e => setNewImpressionPoint(e.target.value)}
                   className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-[#ff7a00]/30 focus:border-[#ff7a00] transition-colors"
