@@ -359,11 +359,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] p-6 md:p-10 font-sans text-gray-900 relative">
+    <div className="min-h-screen bg-[#fafafa] p-4 md:p-10 font-sans text-gray-900 relative">
       <div className="max-w-6xl mx-auto space-y-8">
 
         {/* Header & Filters */}
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col gap-6">
+        <div className="bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col gap-5 md:gap-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold tracking-tight">Video Archive Dashboard</h1>
@@ -380,12 +380,12 @@ export default function DashboardPage() {
 
               <div className="h-6 w-px bg-gray-200 mx-1 hidden md:block"></div>
 
-              <div className="flex bg-gray-100 p-1 rounded-2xl">
+              <div className="flex bg-gray-100 p-1 rounded-2xl w-full md:w-auto overflow-x-auto no-scrollbar">
                 {["All", "youtube", "instagram", "facebook", "ott"].map(p => (
                   <button
                     key={p}
                     onClick={() => setPlatform(p)}
-                    className={`px-4 py-2 text-sm font-medium rounded-xl capitalize transition-colors ${platform === p ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-800"}`}
+                    className={`px-4 py-2 text-xs md:text-sm font-medium rounded-xl capitalize transition-colors whitespace-nowrap flex-1 md:flex-none ${platform === p ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-800"}`}
                   >
                     {p}
                   </button>
@@ -395,7 +395,7 @@ export default function DashboardPage() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-2xl px-4 py-2.5 outline-none cursor-pointer hover:border-gray-300 transition-colors"
+                className="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-2xl px-4 py-2.5 outline-none cursor-pointer hover:border-gray-300 transition-colors w-full md:w-auto"
               >
                 <option value="latest">Latest First</option>
                 <option value="oldest">Oldest First</option>
@@ -403,23 +403,23 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm border-t border-gray-50 pt-4">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-400 font-medium">From</span>
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 text-sm border-t border-gray-50 pt-4">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <span className="text-gray-400 font-medium whitespace-nowrap">From</span>
               <input
                 type="date"
                 value={fromDate}
                 onChange={e => setFromDate(e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-gray-300 text-gray-700"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-gray-300 text-gray-700 w-full"
               />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-400 font-medium">To</span>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <span className="text-gray-400 font-medium whitespace-nowrap">To</span>
               <input
                 type="date"
                 value={toDate}
                 onChange={e => setToDate(e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-gray-300 text-gray-700"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-gray-300 text-gray-700 w-full"
               />
             </div>
           </div>
